@@ -1,43 +1,40 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+const key = (frag: {
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+}) => frag.x + frag.y * 16 + frag.w * 256 + frag.h * 4096;
+
 function App() {
-  const [count, setCount] = useState(0);
+  const [fragments, setFragments] = useState([
+    {
+      x: 0,
+      y: 0,
+      w: 16,
+      h: 16,
+      imageX: 0,
+      imageY: 0,
+    },
+  ]);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((c) => c + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <div className="App_grid">
+        {fragments.map((frag) => (
+          <div
+            key={key(frag)}
+            className="App_fragment"
+            style={{
+              background: 'linear-gradient(to right, black, red)',
+              gridColumn: `${frag.x + 1} / span ${frag.w}`,
+              gridRow: `${frag.y + 1} / span ${frag.h}`,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
