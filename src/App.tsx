@@ -158,6 +158,11 @@ function App() {
           ))}
         </div>
       </div>
+
+      <p>
+        <div><em>Tap</em> para cambiar de imagen.</div>
+        <div><em>Swipe</em> vertical u horizontal para cortar.</div>
+      </p>
     </div>
   );
 }
