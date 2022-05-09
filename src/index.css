@@ -16,3 +16,9 @@ img {
   max-width: 100%;
   max-height: 100%;
 }
+
+html,
+body {
+  /* Disables pull-to-refresh in mobile chrome */
+  overscroll-behavior-y: contain;
+}
