@@ -112,12 +112,11 @@ function App() {
         const dx = Math.abs(x - x0);
         const dy = Math.abs(y - y0);
 
+        target.style.removeProperty('--y-alpha');
+        target.style.removeProperty('--x-alpha');
+
         if (dx > dy && dx > SWIPE_DIST) divide(frag, 'horizontal');
         else if (dy > SWIPE_DIST) divide(frag, 'vertical');
-        else {
-          target.style.removeProperty('--y-alpha');
-          target.style.removeProperty('--x-alpha');
-        }
       }
 
       target.removeEventListener('touchmove', moveHandler);
@@ -156,12 +155,11 @@ function App() {
         const dx = Math.abs(x - x0);
         const dy = Math.abs(y - y0);
 
+        target.style.removeProperty('--y-alpha');
+        target.style.removeProperty('--x-alpha');
+
         if (dx > dy && dx > SWIPE_DIST) divide(frag, 'horizontal');
         else if (dy > SWIPE_DIST) divide(frag, 'vertical');
-        else {
-          target.style.removeProperty('--y-alpha');
-          target.style.removeProperty('--x-alpha');
-        }
       }
 
       target.removeEventListener('mousemove', moveHandler);
