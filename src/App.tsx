@@ -4,6 +4,8 @@ import compo2 from './assets/compo2-web.jpg';
 import compo3 from './assets/compo3-web.jpg';
 import './App.css';
 
+const SWIPE_DIST = 80;
+
 const images = [compo1, compo2, compo3];
 
 type Fragment = {
@@ -83,23 +85,43 @@ function App() {
   };
 
   const touchStart = (ev: React.TouchEvent<HTMLDivElement>, frag: Fragment) => {
+    ev.preventDefault();
+
     const target = ev.target as HTMLDivElement;
     const x0 = ev.touches[0].clientX;
     const y0 = ev.touches[0].clientY;
 
+    let { x, y } = { x: 0, y: 0 };
+
     const moveHandler = (move: TouchEvent) => {
-      const x = move.touches[0].clientX;
-      const y = move.touches[0].clientY;
+      x = move.touches[0].clientX;
+      y = move.touches[0].clientY;
 
       const dx = Math.abs(x - x0);
       const dy = Math.abs(y - y0);
 
       if (dx > dy) {
-        if (dx > 50) divide(frag, 'horizontal');
-      } else if (dy > 50) divide(frag, 'vertical');
+        target.style.setProperty('--x-alpha', Math.min((dx / SWIPE_DIST) ** 2, 1).toPrecision(4));
+        target.style.setProperty('--y-alpha', '0');
+      } else {
+        target.style.setProperty('--y-alpha', Math.min((dy / SWIPE_DIST) ** 2, 1).toPrecision(4));
+        target.style.setProperty('--x-alpha', '0');
+      }
     };
 
     const endHandler = () => {
+      if (x && y) {
+        const dx = Math.abs(x - x0);
+        const dy = Math.abs(y - y0);
+
+        if (dx > dy && dx > SWIPE_DIST) divide(frag, 'horizontal');
+        else if (dy > SWIPE_DIST) divide(frag, 'vertical');
+        else {
+          target.style.removeProperty('--y-alpha');
+          target.style.removeProperty('--x-alpha');
+        }
+      }
+
       target.removeEventListener('touchmove', moveHandler);
       target.removeEventListener('touchend', endHandler);
     };
